@@ -1,0 +1,38 @@
+{
+  "name": "mvp-",
+  "version": "1.0.0",
+  "description": "MMA sports betting app",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon server/index.js",
+    "watch": "webpack --config webpack.config.js -w",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dmcin003/mvp-.git"
+  },
+  "author": "Darron McIntyre",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dmcin003/mvp-/issues"
+  },
+  "homepage": "https://github.com/dmcin003/mvp-#readme",
+  "dependencies": {
+    "axios": "^0.24.0",
+    "express": "^4.17.1",
+    "morgan": "^1.10.0",
+    "pg": "^8.7.1",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.16.0",
+    "@babel/plugin-transform-runtime": "^7.16.4",
+    "@babel/preset-env": "^7.16.4",
+    "@babel/preset-react": "^7.16.0",
+    "babel-loader": "^8.2.3",
+    "webpack": "^5.64.4",
+    "webpack-cli": "^4.9.1"
+  }
+}
