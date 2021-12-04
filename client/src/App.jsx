@@ -45,13 +45,21 @@ const App = () => {
     setBetSlip(copy);
   };
 
+  const removeBet = (fight) => {
+    console.log("remove me");
+    let copy = [...betslip];
+    let index = copy.indexOf(fight);
+    copy.splice(index, 1);
+    setBetSlip(copy);
+  };
+
   return (
     <div>
       <h1>Upcoming Fights</h1>
       <FightList fights={fights} addToBetSlip={addToBetSlip} />
 
       <h1>Betting Slip</h1>
-      <BettingSlip betslip={betslip} />
+      <BettingSlip betslip={betslip} removeBet={removeBet} />
     </div>
   );
 };

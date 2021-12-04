@@ -2,8 +2,13 @@ import React from "react";
 import moment from "moment";
 import { useState, useEffect } from "react";
 
-const BettingSlip = ({ betslip }) => {
+const BettingSlip = ({ betslip, removeBet }) => {
   const [payouts, setPayouts] = useState([]);
+  const [activeBets, setActiveBets] = useState([]);
+
+  useEffect(() => {
+    setActiveBets(betslip);
+  }, [betslip]);
 
   const calculatePayout = (amount, odds, index) => {
     console.log(amount);
@@ -19,7 +24,7 @@ const BettingSlip = ({ betslip }) => {
     }
 
     console.log(totalPayout);
-    betslip[index].payout = totalPayout;
+    activeBets[index].payout = totalPayout;
     let copy = [...payouts];
     copy.push(betslip[index]);
     setPayouts(copy);
@@ -30,11 +35,15 @@ const BettingSlip = ({ betslip }) => {
     console.log(payout);
   };
 
+  const handleRemove = (fight) => {
+    removeBet(fight);
+  };
+
   return (
     <div>
       This is my betting slip
       <div>
-        {betslip.map((fight, index) => {
+        {activeBets.map((fight, index) => {
           console.log(fight);
           return (
             <div key={index}>
@@ -66,6 +75,13 @@ const BettingSlip = ({ betslip }) => {
                   value="Place Bet"
                   onClick={() => {
                     handleClick(fight.payout);
+                  }}
+                />
+                <input
+                  type="button"
+                  value="Remove"
+                  onClick={() => {
+                    handleRemove(fight);
                   }}
                 />
                 <span>{fight.payout ? `${fight.payout}` : ""}</span>
