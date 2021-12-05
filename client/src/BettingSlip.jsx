@@ -1,8 +1,9 @@
 import React from "react";
 import moment from "moment";
+import axios from "axios";
 import { useState, useEffect } from "react";
 
-const BettingSlip = ({ betslip, removeBet }) => {
+const BettingSlip = ({ betslip, removeBet, getCurrentBets, getTotal }) => {
   const [payouts, setPayouts] = useState([]);
   const [activeBets, setActiveBets] = useState([]);
 
@@ -24,6 +25,7 @@ const BettingSlip = ({ betslip, removeBet }) => {
     }
 
     console.log(totalPayout);
+    activeBets[index].amount = amount;
     activeBets[index].payout = totalPayout;
     let copy = [...payouts];
     copy.push(betslip[index]);
@@ -31,9 +33,31 @@ const BettingSlip = ({ betslip, removeBet }) => {
     console.log(betslip[index]);
   };
 
-  const handleClick = (payout) => {
-    console.log(payout);
+  const handleClick = (fight) => {
+    //add to currentBets table with axios
+    axios
+      .post("/current/bets", fight)
+      .then((data) => {
+        console.log(data);
+        getCurrentBets();
+        deductFunds(fight.amount);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
+
+  const deductFunds = (amount) => [
+    axios
+      .put("/wallet/deduct", { amount: amount })
+      .then((data) => {
+        console.log(data);
+        getTotal();
+      })
+      .catch((err) => {
+        console.log(err);
+      }),
+  ];
 
   const handleRemove = (fight) => {
     removeBet(fight);
@@ -74,7 +98,7 @@ const BettingSlip = ({ betslip, removeBet }) => {
                   type="button"
                   value="Place Bet"
                   onClick={() => {
-                    handleClick(fight.payout);
+                    handleClick(fight);
                   }}
                 />
                 <input

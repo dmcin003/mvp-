@@ -8,7 +8,7 @@ const FightList = ({ fights, addToBetSlip }) => {
   };
 
   return (
-    <ul>
+    <ul className="scroll">
       This is my fight list
       {fights.favs.map((fight, index) => {
         let fav;
@@ -33,6 +33,7 @@ const FightList = ({ fights, addToBetSlip }) => {
                     fav: fav,
                     under: under,
                     pick: fav,
+                    amount: null,
                     payout: null,
                     date: fights.dates[index],
                   });
@@ -50,6 +51,7 @@ const FightList = ({ fights, addToBetSlip }) => {
                     fav: fav,
                     under: under,
                     pick: under,
+                    amount: null,
                     payout: null,
                     date: fights.dates[index],
                   });
