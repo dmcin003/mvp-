@@ -12,11 +12,8 @@
   height: 500px;
 }
 
-/* .jum-container {
-  display: grid;
-} */
-
-.odds {
+.stats-link {
+  font-size: 12px;
 }
 
 .fight-date {
@@ -115,6 +112,20 @@
 
 .current-fight {
   font-size: 10px;
+}
+
+.stat-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 70%;
+  height: 100%;
+}
+
+.stat-column {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
 }
 
 #root {

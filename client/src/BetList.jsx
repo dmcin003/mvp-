@@ -4,6 +4,18 @@ import moment from "moment";
 const BetList = ({ currentBets, prevBets }) => {
   const [toggleBets, setToggleBets] = useState(true);
 
+  let aldoBet = {
+    amount: 50,
+    date_aired: "Decemeber 5th, 2021",
+    fav_name: "Rob Font",
+    fav_odds: -140,
+    payout: 110,
+    pick_name: "Jose Aldo",
+    pick_odds: 120,
+    under_name: "Jose Aldo",
+    under_odds: 120,
+  };
+
   if (toggleBets) {
     return (
       <div className="bet-list ">
@@ -44,21 +56,25 @@ const BetList = ({ currentBets, prevBets }) => {
     return (
       <div className="bet-list">
         <h1>Previous Bets</h1>
-        {prevBets.map((bet, index) => {
-          return (
-            <div key={index}>
-              {bet.pick_name}
-              {bet.amount}
-              {bet.Winner ? "Winner" : ""}
-              <div>
-                <span>{bet.fav_name}</span>
-                vs.
-                <span>{bet.under_name}</span>
-              </div>
-              {moment(bet.date).format("MMMM Do YYYY, h:mm:ss a")}
-            </div>
-          );
-        })}
+
+        <div className="bet">
+          <span>
+            Pick: {aldoBet.pick_name} <b>Winner</b>
+          </span>
+          <span>
+            <b>Bet:</b> ${Number(aldoBet.amount).toFixed(2)}
+          </span>
+          <span>
+            <b>Payout:</b> ${Number(aldoBet.payout).toFixed(2)}
+          </span>
+          <div className="current-fight">
+            <span>{aldoBet.fav_name}</span>
+            <span> vs. </span>
+            <span>{aldoBet.under_name}</span>
+          </div>
+          <span className="date">{aldoBet.date_aired}</span>
+        </div>
+
         <button
           onClick={() => {
             setToggleBets(true);

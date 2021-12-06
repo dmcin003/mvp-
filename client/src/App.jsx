@@ -6,6 +6,7 @@ import BettingSlip from "./BettingSlip.jsx";
 import Wallet from "./Wallet.jsx";
 import BetList from "./BetList.jsx";
 import EventResults from "./EventResults.jsx";
+import FighterStats from "./FighterStats.jsx";
 const App = () => {
   const [fights, setFights] = useState({ favs: [], unders: [], dates: [] });
   const [betslip, setBetSlip] = useState([]);
@@ -14,12 +15,15 @@ const App = () => {
   const [currentBets, setcurrentBets] = useState([]);
   const [results, setResults] = useState([]);
   const [view, setView] = useState("odds");
+  const [fightersInfo, setFightersInfo] = useState([]);
+  const [clickedFighter, setClickedFighter] = useState("");
 
   useEffect(() => {
     getTotal();
     getCurrentBets();
     getOddsList();
     getResults();
+    getFightersInfo();
     () => {
       setTimeout(checkWinners, 3000);
     };
@@ -28,6 +32,18 @@ const App = () => {
   useEffect(() => {
     // removeFromCurrentBets();
   }, [prevBets]);
+
+  const getFightersInfo = () => {
+    axios
+      .get("/fighters/stats")
+      .then(({ data }) => {
+        console.log(data);
+        setFightersInfo(data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   const removeFromCurrentBets = () => {
     let newCurrentBets = [];
@@ -242,6 +258,81 @@ const App = () => {
     );
   }
 
+  if (view === "stats") {
+    return (
+      <div className="container">
+        <nav className="navbar navbar-inverse">
+          <div className="container-fluid">
+            <div className="navbar-header">
+              <h3 className="text-muted">MVP</h3>
+            </div>
+            <div>
+              <h3 className="text-muted">MMA sports betting</h3>
+            </div>
+            <ul className="nav navbar-nav">
+              <li className="active">
+                <a
+                  href="#"
+                  onClick={() => {
+                    console.log("change view");
+                    setView("odds");
+                  }}
+                >
+                  Home
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#"
+                  onClick={() => {
+                    console.log("change view");
+                    setView("results");
+                  }}
+                >
+                  Event results
+                </a>
+              </li>
+            </ul>
+          </div>
+        </nav>
+        <div className="jumbotron bg-dark text-white">
+          <div className="list-container">
+            <h1>Stats</h1>
+            <FighterStats
+              fightersInfo={fightersInfo}
+              clickedFighter={clickedFighter}
+            />
+          </div>
+        </div>
+        <div className="container">
+          <div className="row">
+            <div className="col-md-4">
+              <div className="betslip-container">
+                <h1>Betting Slip</h1>
+                <BettingSlip
+                  betslip={betslip}
+                  removeBet={removeBet}
+                  getCurrentBets={getCurrentBets}
+                  getTotal={getTotal}
+                />
+              </div>
+            </div>
+            <div className="col-md-4">
+              <Wallet wallet={wallet} getTotal={getTotal} />
+            </div>
+            <div className="col-md-4">
+              <BetList currentBets={currentBets} prevBets={prevBets} />
+            </div>
+          </div>
+          <hr></hr>
+          <footer>
+            <p>MVP demo | rfe6 in the house!</p>
+          </footer>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="container">
       <nav className="navbar navbar-inverse">
@@ -282,7 +373,12 @@ const App = () => {
       <div className="jumbotron bg-dark text-white">
         <div className="list-container">
           <h1>Upcoming Fights</h1>
-          <FightList fights={fights} addToBetSlip={addToBetSlip} />
+          <FightList
+            fights={fights}
+            addToBetSlip={addToBetSlip}
+            setView={setView}
+            setClickedFighter={setClickedFighter}
+          />
         </div>
       </div>
       <div className="container">

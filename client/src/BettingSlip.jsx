@@ -111,7 +111,9 @@ const BettingSlip = ({ betslip, removeBet, getCurrentBets, getTotal }) => {
                 }}
               />
               <span>
-                {fight.payout ? `$${Number(fight.payout).toFixed(2)}` : ""}
+                {fight.payout
+                  ? `Potential Payout: $${Number(fight.payout).toFixed(2)}`
+                  : ""}
               </span>
             </div>
             <hr></hr>

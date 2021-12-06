@@ -18,7 +18,7 @@ app.use(express.static(path.join(__dirname, "../public")));
 
 // api routes
 
-app.get("/mma/fight/odds/wksk", (req, res) => {
+app.get("/mma/fight/odds/", (req, res) => {
   let params = { apiKey: config.TOKEN, regions: "us", oddsFormat: "american" };
   let options = {
     method: "get",
@@ -45,6 +45,26 @@ app.get("/mma/event/results/:event_id", (req, res) => {
   let options = {
     method: "get",
     url: `https://api.sportsdata.io/v3/mma/scores/json/Event/${eventId}`,
+    headers: {
+      "User-Agent": "request",
+      "Ocp-Apim-Subscription-Key": config.RESULTSTOKEN,
+    },
+  };
+
+  axios(options)
+    .then(({ data }) => {
+      res.json(data);
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(500).send(err);
+    });
+});
+
+app.get("/fighters/stats", (req, res) => {
+  let options = {
+    method: "get",
+    url: `https://api.sportsdata.io/v3/mma/scores/json/Fighters`,
     headers: {
       "User-Agent": "request",
       "Ocp-Apim-Subscription-Key": config.RESULTSTOKEN,

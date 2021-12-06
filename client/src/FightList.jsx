@@ -1,7 +1,7 @@
 import React from "react";
 import moment from "moment";
 
-const FightList = ({ fights, addToBetSlip }) => {
+const FightList = ({ fights, addToBetSlip, setView, setClickedFighter }) => {
   const handleClick = (fight) => {
     //pass function down to update betslip;
     addToBetSlip(fight);
@@ -39,6 +39,19 @@ const FightList = ({ fights, addToBetSlip }) => {
                 <div>{fav.name}</div>
                 <div className="odds">{fav.odds}</div>
               </div>
+              <div>
+                <a
+                  className="stats-link"
+                  href="#"
+                  onClick={() => {
+                    setView("stats");
+                    setClickedFighter(fav.name);
+                    console.log(fav.name);
+                  }}
+                >
+                  see stats
+                </a>
+              </div>
               <b>VS.</b>
               <div
                 className="fighter"
@@ -55,6 +68,19 @@ const FightList = ({ fights, addToBetSlip }) => {
               >
                 <div>{under.name}</div>
                 <div className="odds">{under.odds}</div>
+              </div>
+              <div>
+                <a
+                  className="stats-link"
+                  href="#"
+                  onClick={() => {
+                    setView("stats");
+                    setClickedFighter(under.name);
+                    console.log(under.name);
+                  }}
+                >
+                  see stats
+                </a>
               </div>
             </div>
             <p className="fight-date">
