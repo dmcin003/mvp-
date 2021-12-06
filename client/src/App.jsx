@@ -13,6 +13,7 @@ const App = () => {
   const [prevBets, setPrevBets] = useState([]);
   const [currentBets, setcurrentBets] = useState([]);
   const [results, setResults] = useState([]);
+  const [view, setView] = useState("odds");
 
   useEffect(() => {
     getTotal();
@@ -169,6 +170,78 @@ const App = () => {
       });
   };
 
+  if (view === "results") {
+    return (
+      <div className="container">
+        <nav className="navbar navbar-inverse">
+          <div className="container-fluid">
+            <div className="navbar-header">
+              <h3 className="text-muted">MVP</h3>
+            </div>
+            <div>
+              <h3 className="text-muted">MMA sports betting</h3>
+            </div>
+            <ul className="nav navbar-nav">
+              <li className="active">
+                <a
+                  href="#"
+                  onClick={() => {
+                    console.log("change view");
+                    setView("odds");
+                  }}
+                >
+                  Home
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#"
+                  onClick={() => {
+                    console.log("change view");
+                    setView("results");
+                  }}
+                >
+                  Event results
+                </a>
+              </li>
+            </ul>
+          </div>
+        </nav>
+        <div className="jumbotron bg-dark text-white">
+          <div className="list-container">
+            <h1>Event Results of Previous Bets</h1>
+            <EventResults results={results} />
+          </div>
+        </div>
+        <div className="container">
+          <div className="row">
+            <div className="col-md-4">
+              <div className="betslip-container">
+                <h1>Betting Slip</h1>
+                <BettingSlip
+                  betslip={betslip}
+                  removeBet={removeBet}
+                  getCurrentBets={getCurrentBets}
+                  getTotal={getTotal}
+                />
+              </div>
+            </div>
+            <div className="col-md-4">
+              <Wallet wallet={wallet} getTotal={getTotal} />
+            </div>
+            <div className="col-md-4">
+              <BetList currentBets={currentBets} prevBets={prevBets} />
+            </div>
+          </div>
+          <hr></hr>
+          <footer>
+            <p>MVP demo | rfe6 in the house!</p>
+          </footer>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="container">
       <nav className="navbar navbar-inverse">
@@ -176,17 +249,37 @@ const App = () => {
           <div className="navbar-header">
             <h3 className="text-muted">MVP</h3>
           </div>
+          <div>
+            <h3 className="text-muted">MMA sports betting</h3>
+          </div>
           <ul className="nav navbar-nav">
             <li className="active">
-              <a href="#">Home</a>
+              <a
+                href="#"
+                onClick={() => {
+                  console.log("change view");
+                  setView("odds");
+                }}
+              >
+                Home
+              </a>
             </li>
             <li>
-              <a href="#">Event results</a>
+              <a
+                href="#"
+                onClick={() => {
+                  console.log("change view");
+                  setView("results");
+                }}
+              >
+                Event results
+              </a>
             </li>
           </ul>
         </div>
       </nav>
-      <div className="jumbotron">
+      <hr></hr>
+      <div className="jumbotron bg-dark text-white">
         <div className="list-container">
           <h1>Upcoming Fights</h1>
           <FightList fights={fights} addToBetSlip={addToBetSlip} />
@@ -195,20 +288,20 @@ const App = () => {
       <div className="container">
         <div className="row">
           <div className="col-md-4">
-            <h1>Betting Slip</h1>
-            <BettingSlip
-              betslip={betslip}
-              removeBet={removeBet}
-              getCurrentBets={getCurrentBets}
-              getTotal={getTotal}
-            />
+            <div className="betslip-container">
+              <h1>Betting Slip</h1>
+              <BettingSlip
+                betslip={betslip}
+                removeBet={removeBet}
+                getCurrentBets={getCurrentBets}
+                getTotal={getTotal}
+              />
+            </div>
           </div>
           <div className="col-md-4">
-            <h1>Wallet</h1>
             <Wallet wallet={wallet} getTotal={getTotal} />
           </div>
           <div className="col-md-4">
-            <h1>Bet List</h1>
             <BetList currentBets={currentBets} prevBets={prevBets} />
           </div>
         </div>
@@ -216,9 +309,6 @@ const App = () => {
         <footer>
           <p>MVP demo | rfe6 in the house!</p>
         </footer>
-      </div>
-      <div className="container">
-        <EventResults results={results} />
       </div>
     </div>
   );

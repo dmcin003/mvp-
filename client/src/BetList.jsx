@@ -6,22 +6,31 @@ const BetList = ({ currentBets, prevBets }) => {
 
   if (toggleBets) {
     return (
-      <div>
+      <div className="bet-list ">
         <h1>Current Bets</h1>
-        {currentBets.map((bet, index) => {
-          return (
-            <div key={index}>
-              {bet.pick_name}
-              {bet.amount}
-              <div>
-                <span>{bet.fav_name}</span>
-                vs.
-                <span>{bet.under_name}</span>
+        <div className="scroll">
+          {currentBets.map((bet, index) => {
+            return (
+              <div key={index} className="bet">
+                <span>Pick: {bet.pick_name}</span>
+                <span>
+                  <b>Bet:</b> ${Number(bet.amount).toFixed(2)}
+                </span>
+                <span>
+                  <b>Potential Payout:</b> ${Number(bet.payout).toFixed(2)}
+                </span>
+                <div className="current-fight">
+                  <span>{bet.fav_name}</span>
+                  <span> vs. </span>
+                  <span>{bet.under_name}</span>
+                </div>
+                <span className="date">
+                  {moment(bet.date_aired).format("MMMM Do YYYY, h:mm:ss a")}
+                </span>
               </div>
-              {moment(bet.date).format("MMMM Do YYYY, h:mm:ss a")}
-            </div>
-          );
-        })}
+            );
+          })}
+        </div>
         <button
           onClick={() => {
             setToggleBets(false);
@@ -33,7 +42,7 @@ const BetList = ({ currentBets, prevBets }) => {
     );
   } else {
     return (
-      <div>
+      <div className="bet-list">
         <h1>Previous Bets</h1>
         {prevBets.map((bet, index) => {
           return (

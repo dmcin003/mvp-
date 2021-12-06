@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useForm } from "react-hook-form";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowDown } from "@fortawesome/free-solid-svg-icons";
 
 const Wallet = ({ getTotal, wallet }) => {
   const { register, handleSubmit, errors } = useForm();
@@ -18,15 +20,23 @@ const Wallet = ({ getTotal, wallet }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <div>Available Funds: {wallet.total}</div>
-      <input
-        type="text"
-        name="amount"
-        {...register("amount", { required: true })}
-      />
-      <input type="submit" value="Add Funds" />
-    </form>
+    <div className="wallet">
+      <h1>Wallet</h1>
+      <div>Available Funds: ${wallet.total.toFixed(2)}</div>
+      <span>Add money to start betting Now!</span>
+      <div>
+        <FontAwesomeIcon icon={faArrowDown} />
+      </div>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <input
+          type="text"
+          name="amount"
+          placeholder="Amount"
+          {...register("amount", { required: true })}
+        />
+        <input type="submit" value="Add Funds" />
+      </form>
+    </div>
   );
 };
 

@@ -8,8 +8,7 @@ const FightList = ({ fights, addToBetSlip }) => {
   };
 
   return (
-    <ul className="scroll">
-      This is my fight list
+    <div className="scroll">
       {fights.favs.map((fight, index) => {
         let fav;
         let under;
@@ -22,12 +21,10 @@ const FightList = ({ fights, addToBetSlip }) => {
         }
 
         return (
-          <li key={index}>
-            <div>
-              <b>
-                {moment(fights.dates[index]).format("MMMM Do YYYY, h:mm:ss a")}
-              </b>
-              <label
+          <div key={index}>
+            <div className="fight">
+              <div
+                className="fighter"
                 onClick={() => {
                   handleClick({
                     fav: fav,
@@ -39,13 +36,12 @@ const FightList = ({ fights, addToBetSlip }) => {
                   });
                 }}
               >
-                Favorite
-                <span>{fav.name}</span>
-                <span>{fav.odds}</span>
-              </label>
-            </div>
-            <div>
-              <label
+                <div>{fav.name}</div>
+                <div className="odds">{fav.odds}</div>
+              </div>
+              <b>VS.</b>
+              <div
+                className="fighter"
                 onClick={() => {
                   handleClick({
                     fav: fav,
@@ -57,15 +53,18 @@ const FightList = ({ fights, addToBetSlip }) => {
                   });
                 }}
               >
-                Underdog
-                <span>{under.name}</span>
-                <span>{under.odds}</span>
-              </label>
+                <div>{under.name}</div>
+                <div className="odds">{under.odds}</div>
+              </div>
             </div>
-          </li>
+            <p className="fight-date">
+              {moment(fights.dates[index]).format("MMMM Do YYYY, h:mm:ss a")}
+            </p>
+            <hr></hr>
+          </div>
         );
       })}
-    </ul>
+    </div>
   );
 };
 

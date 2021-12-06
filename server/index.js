@@ -18,7 +18,7 @@ app.use(express.static(path.join(__dirname, "../public")));
 
 // api routes
 
-app.get("/mma/fight/odds", (req, res) => {
+app.get("/mma/fight/odds/wksk", (req, res) => {
   let params = { apiKey: config.TOKEN, regions: "us", oddsFormat: "american" };
   let options = {
     method: "get",
