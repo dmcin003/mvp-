@@ -27,6 +27,7 @@
     "@mui/material": "^5.2.5",
     "axios": "^0.24.0",
     "express": "^4.17.1",
+    "material-ui-icons": "^1.0.0-beta.36",
     "moment": "^2.29.1",
     "morgan": "^1.10.0",
     "pg": "^8.7.1",

@@ -1,12 +1,16 @@
 import React from "react";
 import axios from "axios";
 import { useEffect, useState } from "react";
+import Backdrop from "@mui/material/Backdrop";
+import CircularProgress from "@mui/material/CircularProgress";
 import FightList from "./FightList.jsx";
 import BettingSlip from "./BettingSlip.jsx";
 import Wallet from "./Wallet.jsx";
 import BetList from "./BetList.jsx";
 import EventResults from "./EventResults.jsx";
 import FighterStats from "./FighterStats.jsx";
+import ResponsiveAppBar from "./MUI/NavBar.jsx";
+
 const App = () => {
   const [fights, setFights] = useState({ favs: [], unders: [], dates: [] });
   const [betslip, setBetSlip] = useState([]);
@@ -14,7 +18,7 @@ const App = () => {
   const [prevBets, setPrevBets] = useState([]);
   const [currentBets, setcurrentBets] = useState([]);
   const [results, setResults] = useState([]);
-  const [view, setView] = useState("odds");
+  const [view, setView] = useState("Home");
   const [fightersInfo, setFightersInfo] = useState([]);
   const [clickedFighter, setClickedFighter] = useState("");
 
@@ -186,43 +190,11 @@ const App = () => {
       });
   };
 
-  if (view === "results") {
+  if (view === "Event Results") {
     return (
       <div className="container">
-        <nav className="navbar navbar-inverse">
-          <div className="container-fluid">
-            <div className="navbar-header">
-              <h3 className="text-muted">MVP</h3>
-            </div>
-            <div>
-              <h3 className="text-muted">MMA sports betting</h3>
-            </div>
-            <ul className="nav navbar-nav">
-              <li className="active">
-                <a
-                  href="#"
-                  onClick={() => {
-                    console.log("change view");
-                    setView("odds");
-                  }}
-                >
-                  Home
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  onClick={() => {
-                    console.log("change view");
-                    setView("results");
-                  }}
-                >
-                  Event results
-                </a>
-              </li>
-            </ul>
-          </div>
-        </nav>
+        <ResponsiveAppBar setView={setView} />
+
         <div className="jumbotron bg-dark text-white">
           <div className="list-container">
             <h1>Event Results of Previous Bets</h1>
@@ -261,40 +233,8 @@ const App = () => {
   if (view === "stats") {
     return (
       <div className="container">
-        <nav className="navbar navbar-inverse">
-          <div className="container-fluid">
-            <div className="navbar-header">
-              <h3 className="text-muted">MVP</h3>
-            </div>
-            <div>
-              <h3 className="text-muted">MMA sports betting</h3>
-            </div>
-            <ul className="nav navbar-nav">
-              <li className="active">
-                <a
-                  href="#"
-                  onClick={() => {
-                    console.log("change view");
-                    setView("odds");
-                  }}
-                >
-                  Home
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  onClick={() => {
-                    console.log("change view");
-                    setView("results");
-                  }}
-                >
-                  Event results
-                </a>
-              </li>
-            </ul>
-          </div>
-        </nav>
+        <ResponsiveAppBar setView={setView} />
+
         <div className="jumbotron bg-dark text-white">
           <div className="list-container">
             <h1>Stats</h1>
@@ -335,44 +275,21 @@ const App = () => {
 
   return (
     <div className="container">
-      <nav className="navbar navbar-inverse">
-        <div className="container-fluid">
-          <div className="navbar-header">
-            <h3 className="text-muted">MVP</h3>
-          </div>
-          <div>
-            <h3 className="text-muted">MMA sports betting</h3>
-          </div>
-          <ul className="nav navbar-nav">
-            <li className="active">
-              <a
-                href="#"
-                onClick={() => {
-                  console.log("change view");
-                  setView("odds");
-                }}
-              >
-                Home
-              </a>
-            </li>
-            <li>
-              <a
-                href="#"
-                onClick={() => {
-                  console.log("change view");
-                  setView("results");
-                }}
-              >
-                Event results
-              </a>
-            </li>
-          </ul>
-        </div>
-      </nav>
-      <hr></hr>
+      <ResponsiveAppBar setView={setView} />
+
       <div className="jumbotron bg-dark text-white">
         <div className="list-container">
           <h1>Upcoming Fights</h1>
+          {fights.favs[0] ? (
+            ""
+          ) : (
+            <Backdrop
+              sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+              open
+            >
+              <CircularProgress color="inherit" />
+            </Backdrop>
+          )}
           <FightList
             fights={fights}
             addToBetSlip={addToBetSlip}
