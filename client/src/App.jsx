@@ -204,15 +204,12 @@ const App = () => {
         <div className="container">
           <div className="row">
             <div className="col-md-4">
-              <div className="betslip-container">
-                <h1>Betting Slip</h1>
-                <BettingSlip
-                  betslip={betslip}
-                  removeBet={removeBet}
-                  getCurrentBets={getCurrentBets}
-                  getTotal={getTotal}
-                />
-              </div>
+              <BettingSlip
+                betslip={betslip}
+                removeBet={removeBet}
+                getCurrentBets={getCurrentBets}
+                getTotal={getTotal}
+              />
             </div>
             <div className="col-md-4">
               <Wallet wallet={wallet} getTotal={getTotal} />
@@ -247,15 +244,12 @@ const App = () => {
         <div className="container">
           <div className="row">
             <div className="col-md-4">
-              <div className="betslip-container">
-                <h1>Betting Slip</h1>
-                <BettingSlip
-                  betslip={betslip}
-                  removeBet={removeBet}
-                  getCurrentBets={getCurrentBets}
-                  getTotal={getTotal}
-                />
-              </div>
+              <BettingSlip
+                betslip={betslip}
+                removeBet={removeBet}
+                getCurrentBets={getCurrentBets}
+                getTotal={getTotal}
+              />
             </div>
             <div className="col-md-4">
               <Wallet wallet={wallet} getTotal={getTotal} />
