@@ -1,6 +1,8 @@
 import React from "react";
 import axios from "axios";
 import { useEffect, useState } from "react";
+import Backdrop from "@mui/material/Backdrop";
+import CircularProgress from "@mui/material/CircularProgress";
 import FightList from "./FightList.jsx";
 import BettingSlip from "./BettingSlip.jsx";
 import Wallet from "./Wallet.jsx";
@@ -278,6 +280,16 @@ const App = () => {
       <div className="jumbotron bg-dark text-white">
         <div className="list-container">
           <h1>Upcoming Fights</h1>
+          {fights.favs[0] ? (
+            ""
+          ) : (
+            <Backdrop
+              sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+              open
+            >
+              <CircularProgress color="inherit" />
+            </Backdrop>
+          )}
           <FightList
             fights={fights}
             addToBetSlip={addToBetSlip}
