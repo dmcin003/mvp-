@@ -84,7 +84,7 @@ const FightList = ({ fights, addToBetSlip, setView, setClickedFighter }) => {
               </div>
             </div>
             <p className="fight-date">
-              {moment(fights.dates[index]).format("MMMM Do YYYY, h:mm:ss a")}
+              {moment(fights.dates[index]).format("MMMM Do YYYY, h:mm a")}
             </p>
             <hr></hr>
           </div>

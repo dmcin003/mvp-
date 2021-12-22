@@ -85,7 +85,7 @@ const BettingSlip = ({ betslip, removeBet, getCurrentBets, getTotal }) => {
               <div key={index}>
                 <div>
                   <span className="date">
-                    {moment(fight.date).format("MMMM Do YYYY, h:mm:ss a")}
+                    {moment(fight.date).format("MMMM Do YYYY, h:mm a")}
                   </span>
                   <div className="betslip-fighter">
                     <span>{fight.fav.name}</span>

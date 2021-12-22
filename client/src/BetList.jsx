@@ -49,7 +49,7 @@ const BetList = ({ currentBets, prevBets }) => {
                     <span>{bet.under_name}</span>
                   </div>
                   <span className="date">
-                    {moment(bet.date_aired).format("MMMM Do YYYY, h:mm:ss a")}
+                    {moment(bet.date_aired).format("MMMM Do YYYY, h:mm a")}
                   </span>
                 </div>
               );
