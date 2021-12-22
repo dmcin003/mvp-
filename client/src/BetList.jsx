@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import Box from "@mui/material/Box";
 import moment from "moment";
 
 const BetList = ({ currentBets, prevBets }) => {
@@ -18,71 +19,95 @@ const BetList = ({ currentBets, prevBets }) => {
 
   if (toggleBets) {
     return (
-      <div className="bet-list ">
-        <h1>Current Bets</h1>
-        <div className="scroll">
-          {currentBets.map((bet, index) => {
-            return (
-              <div key={index} className="bet">
-                <span>Pick: {bet.pick_name}</span>
-                <span>
-                  <b>Bet:</b> ${Number(bet.amount).toFixed(2)}
-                </span>
-                <span>
-                  <b>Potential Payout:</b> ${Number(bet.payout).toFixed(2)}
-                </span>
-                <div className="current-fight">
-                  <span>{bet.fav_name}</span>
-                  <span> vs. </span>
-                  <span>{bet.under_name}</span>
+      <Box
+        sx={{
+          width: 300,
+          height: 300,
+          backgroundColor: "primary.dark",
+          "&:hover": {
+            backgroundColor: "primary.main",
+            opacity: [0.9, 0.8, 0.7],
+          },
+        }}
+      >
+        <div className="bet-list ">
+          <h1>Current Bets</h1>
+          <div className="scroll">
+            {currentBets.map((bet, index) => {
+              return (
+                <div key={index} className="bet">
+                  <span>Pick: {bet.pick_name}</span>
+                  <span>
+                    <b>Bet:</b> ${Number(bet.amount).toFixed(2)}
+                  </span>
+                  <span>
+                    <b>Potential Payout:</b> ${Number(bet.payout).toFixed(2)}
+                  </span>
+                  <div className="current-fight">
+                    <span>{bet.fav_name}</span>
+                    <span> vs. </span>
+                    <span>{bet.under_name}</span>
+                  </div>
+                  <span className="date">
+                    {moment(bet.date_aired).format("MMMM Do YYYY, h:mm:ss a")}
+                  </span>
                 </div>
-                <span className="date">
-                  {moment(bet.date_aired).format("MMMM Do YYYY, h:mm:ss a")}
-                </span>
-              </div>
-            );
-          })}
+              );
+            })}
+          </div>
+          <button
+            onClick={() => {
+              setToggleBets(false);
+            }}
+          >
+            See prev Bets
+          </button>
         </div>
-        <button
-          onClick={() => {
-            setToggleBets(false);
-          }}
-        >
-          See prev Bets
-        </button>
-      </div>
+      </Box>
     );
   } else {
     return (
-      <div className="bet-list">
-        <h1>Previous Bets</h1>
+      <Box
+        sx={{
+          width: 300,
+          height: 300,
+          backgroundColor: "primary.dark",
+          "&:hover": {
+            backgroundColor: "primary.main",
+            opacity: [0.9, 0.8, 0.7],
+          },
+        }}
+      >
+        <div className="bet-list">
+          <h1>Previous Bets</h1>
 
-        <div className="bet">
-          <span>
-            Pick: {aldoBet.pick_name} <b>Winner</b>
-          </span>
-          <span>
-            <b>Bet:</b> ${Number(aldoBet.amount).toFixed(2)}
-          </span>
-          <span>
-            <b>Payout:</b> ${Number(aldoBet.payout).toFixed(2)}
-          </span>
-          <div className="current-fight">
-            <span>{aldoBet.fav_name}</span>
-            <span> vs. </span>
-            <span>{aldoBet.under_name}</span>
+          <div className="bet">
+            <span>
+              Pick: {aldoBet.pick_name} <b>Winner</b>
+            </span>
+            <span>
+              <b>Bet:</b> ${Number(aldoBet.amount).toFixed(2)}
+            </span>
+            <span>
+              <b>Payout:</b> ${Number(aldoBet.payout).toFixed(2)}
+            </span>
+            <div className="current-fight">
+              <span>{aldoBet.fav_name}</span>
+              <span> vs. </span>
+              <span>{aldoBet.under_name}</span>
+            </div>
+            <span className="date">{aldoBet.date_aired}</span>
           </div>
-          <span className="date">{aldoBet.date_aired}</span>
-        </div>
 
-        <button
-          onClick={() => {
-            setToggleBets(true);
-          }}
-        >
-          See current Bets
-        </button>
-      </div>
+          <button
+            onClick={() => {
+              setToggleBets(true);
+            }}
+          >
+            See current Bets
+          </button>
+        </div>
+      </Box>
     );
   }
 };

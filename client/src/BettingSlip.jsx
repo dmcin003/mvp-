@@ -1,4 +1,5 @@
 import React from "react";
+import Box from "@mui/material/Box";
 import moment from "moment";
 import axios from "axios";
 import { useState, useEffect } from "react";
@@ -65,62 +66,76 @@ const BettingSlip = ({ betslip, removeBet, getCurrentBets, getTotal }) => {
   };
 
   return (
-    <div className="scroll">
-      {activeBets.map((fight, index) => {
-        console.log(fight);
-        return (
-          <div key={index}>
-            <div>
-              <span className="date">
-                {moment(fight.date).format("MMMM Do YYYY, h:mm:ss a")}
-              </span>
-              <div className="betslip-fighter">
-                <span>{fight.fav.name}</span>
-                <span>{fight.fav.odds}</span>
+    <Box
+      sx={{
+        width: 300,
+        height: 300,
+        backgroundColor: "primary.dark",
+        "&:hover": {
+          backgroundColor: "primary.main",
+          opacity: [0.9, 0.8, 0.7],
+        },
+      }}
+    >
+      <div className="betslip-container">
+        <h1>Bet Slip</h1>
+        <div className="scroll">
+          {activeBets.map((fight, index) => {
+            return (
+              <div key={index}>
+                <div>
+                  <span className="date">
+                    {moment(fight.date).format("MMMM Do YYYY, h:mm:ss a")}
+                  </span>
+                  <div className="betslip-fighter">
+                    <span>{fight.fav.name}</span>
+                    <span>{fight.fav.odds}</span>
+                  </div>
+                  <div className="betslip-fighter">
+                    <span>{fight.under.name}</span>
+                    <span>{fight.under.odds}</span>
+                  </div>
+                </div>
+                <div>
+                  <span>
+                    <b>Pick: </b>
+                    {fight.pick.name}
+                  </span>
+                  <input
+                    type="text"
+                    placeholder="Amount"
+                    name="amount"
+                    onChange={(e) => {
+                      calculatePayout(e.target.value, fight.pick.odds, index);
+                    }}
+                  />
+                  <input
+                    type="button"
+                    value="Place Bet"
+                    onClick={() => {
+                      handleClick(fight);
+                    }}
+                  />
+                  <input
+                    type="button"
+                    value="Remove"
+                    onClick={() => {
+                      handleRemove(fight);
+                    }}
+                  />
+                  <span>
+                    {fight.payout
+                      ? `Potential Payout: $${Number(fight.payout).toFixed(2)}`
+                      : ""}
+                  </span>
+                </div>
+                <hr></hr>
               </div>
-              <div className="betslip-fighter">
-                <span>{fight.under.name}</span>
-                <span>{fight.under.odds}</span>
-              </div>
-            </div>
-            <div>
-              <span>
-                <b>Pick: </b>
-                {fight.pick.name}
-              </span>
-              <input
-                type="text"
-                placeholder="Amount"
-                name="amount"
-                onChange={(e) => {
-                  calculatePayout(e.target.value, fight.pick.odds, index);
-                }}
-              />
-              <input
-                type="button"
-                value="Place Bet"
-                onClick={() => {
-                  handleClick(fight);
-                }}
-              />
-              <input
-                type="button"
-                value="Remove"
-                onClick={() => {
-                  handleRemove(fight);
-                }}
-              />
-              <span>
-                {fight.payout
-                  ? `Potential Payout: $${Number(fight.payout).toFixed(2)}`
-                  : ""}
-              </span>
-            </div>
-            <hr></hr>
-          </div>
-        );
-      })}
-    </div>
+            );
+          })}
+        </div>
+      </div>
+    </Box>
   );
 };
 

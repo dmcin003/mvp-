@@ -1,6 +1,6 @@
 .scroll {
   overflow-y: scroll;
-  width: 60%;
+  width: 100%;
 }
 
 .list-container {
@@ -75,7 +75,7 @@
   flex-direction: column;
   width: 100%;
   height: 100%;
-  height: 500px;
+  border: solid black;
 }
 .date {
   font-size: 11px;
@@ -92,16 +92,18 @@
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
+  width: 100%;
+  height: 100%;
   border: solid black;
-  background-color: lightblue;
-  height: 300px;
 }
 
 .bet-list {
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-  height: 500px;
+  height: 100%;
+  width: 100%;
+  border: solid black;
 }
 
 .bet {
