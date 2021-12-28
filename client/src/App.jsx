@@ -1,5 +1,6 @@
 import React from "react";
 import axios from "axios";
+import _ from "underscore";
 import { useEffect, useState } from "react";
 import Backdrop from "@mui/material/Backdrop";
 import CircularProgress from "@mui/material/CircularProgress";
@@ -15,12 +16,14 @@ const App = () => {
   const [fights, setFights] = useState({ favs: [], unders: [], dates: [] });
   const [betslip, setBetSlip] = useState([]);
   const [wallet, setWallet] = useState({ total: 0 });
-  const [prevBets, setPrevBets] = useState([]);
+  const [previousBets, setPreviousBets] = useState([]);
   const [currentBets, setcurrentBets] = useState([]);
   const [results, setResults] = useState([]);
   const [view, setView] = useState("Home");
   const [fightersInfo, setFightersInfo] = useState([]);
   const [clickedFighter, setClickedFighter] = useState("");
+  const [yearsToCheck, setYearsToCheck] = useState([]);
+  const [eventIdsToCheck, setEventIdsToCheck] = useState([]);
 
   useEffect(() => {
     getTotal();
@@ -28,14 +31,21 @@ const App = () => {
     getOddsList();
     getResults();
     getFightersInfo();
-    () => {
-      setTimeout(checkWinners, 3000);
-    };
   }, []);
 
   useEffect(() => {
     // removeFromCurrentBets();
-  }, [prevBets]);
+    getYearsFromCurrentBets();
+  }, [currentBets]);
+
+  useEffect(() => {
+    getEventIds();
+  }, [yearsToCheck]);
+
+  useEffect(() => {
+    console.log("check them events bruh");
+    checkWinners();
+  }, [eventIdsToCheck]);
 
   const getFightersInfo = () => {
     axios
@@ -62,50 +72,79 @@ const App = () => {
     setcurrentBets(copyCurrent);
   };
 
-  const checkWinners = () => {
-    axios
-      .get("/mma/event/results/220")
-      .then(({ data }) => {
-        console.log(data.Fights);
-        console.log(currentBets);
-        let finished = data.Fights.map((fight) => {
-          if ((fight.Status = "Final")) {
-            return fight;
+  const getYearsFromCurrentBets = () => {
+    let years = currentBets.map((bet) => {
+      return bet.date_aired.substring(0, 4);
+    });
+    years = _.uniq(years);
+    setYearsToCheck(years);
+  };
+
+  const getEventIds = () => {
+    let eIds;
+    let eventIds = [];
+    yearsToCheck.map((year) => {
+      axios
+        .get(`/mma/schedule/${year}`)
+        .then(({ data }) => {
+          console.log("🚀 ~ file: App.jsx ~ line 82 ~ .then ~ data", data);
+          let ids = data.map((event) => {
+            return event.EventId;
+          });
+          if (ids.length) {
+            eIds = eventIds.concat(ids);
           }
+          setEventIdsToCheck(eIds);
+        })
+        .catch((err) => {
+          console.log(err);
         });
-        let winners = [];
-        for (let i = 0; i < finished.length; i++) {
-          if (finished[i].Fighters) {
-            if (finished[i].Fighters[0]) {
-              if (finished[i].Fighters[0].Winner === true) {
-                winners.push(finished[i].Fighters[0]);
-              }
+    });
+  };
+
+  //reference to check winners from a specific event
+  const checkWinners = () => {
+    eventIdsToCheck.map((id) => {
+      axios
+        .get(`/mma/event/results/${id}`)
+        .then(({ data }) => {
+          let finished = data.Fights.map((fight) => {
+            if ((fight.Status = "Final")) {
+              return fight;
             }
-            if (finished[i].Fighters[1]) {
-              if (finished[i].Fighters[1].Winner === true) {
-                winners.push(finished[i].Fighters[1]);
+          });
+
+          let winners = [];
+          for (let i = 0; i < finished.length; i++) {
+            if (finished[i].Fighters) {
+              if (finished[i].Fighters[0]) {
+                if (finished[i].Fighters[0].Winner === true) {
+                  winners.push(finished[i].Fighters[0]);
+                }
+              }
+              if (finished[i].Fighters[1]) {
+                if (finished[i].Fighters[1].Winner === true) {
+                  winners.push(finished[i].Fighters[1]);
+                }
               }
             }
           }
-        }
 
-        let prevBets = [];
-        for (let i = 0; i < winners.length; i++) {
-          for (let j = 0; j < currentBets.length; j++) {
-            if (currentBets[j].pick_name.includes(winners[i].LastName)) {
-              let prevBet = currentBets[j];
-              prevBet.Winner = true;
-
-              prevBets.push(prevBet);
+          for (let i = 0; i < winners.length; i++) {
+            for (let j = 0; j < currentBets.length; j++) {
+              if (
+                winners[i].FirstName + " " + winners[i].LastName ===
+                currentBets[j].pick_name
+              ) {
+                currentBets[j].Winner = true;
+              }
             }
           }
-        }
-        setPrevBets(prevBets);
-        console.log(prevBets);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    });
   };
 
   const getOddsList = () => {
@@ -215,7 +254,7 @@ const App = () => {
               <Wallet wallet={wallet} getTotal={getTotal} />
             </div>
             <div className="col-md-4">
-              <BetList currentBets={currentBets} prevBets={prevBets} />
+              <BetList currentBets={currentBets} prevBets={previousBets} />
             </div>
           </div>
           <hr></hr>
@@ -255,7 +294,7 @@ const App = () => {
               <Wallet wallet={wallet} getTotal={getTotal} />
             </div>
             <div className="col-md-4">
-              <BetList currentBets={currentBets} prevBets={prevBets} />
+              <BetList currentBets={currentBets} prevBets={previousBets} />
             </div>
           </div>
           <hr></hr>
@@ -306,7 +345,7 @@ const App = () => {
             <Wallet wallet={wallet} getTotal={getTotal} />
           </div>
           <div className="col-md-4">
-            <BetList currentBets={currentBets} prevBets={prevBets} />
+            <BetList currentBets={currentBets} prevBets={previousBets} />
           </div>
         </div>
         <hr></hr>

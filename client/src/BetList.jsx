@@ -51,6 +51,7 @@ const BetList = ({ currentBets, prevBets }) => {
                   <span className="date">
                     {moment(bet.date_aired).format("MMMM Do YYYY, h:mm a")}
                   </span>
+                  <hr />
                 </div>
               );
             })}

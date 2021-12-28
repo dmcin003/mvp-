@@ -39,6 +39,27 @@ app.get("/mma/fight/odds/", (req, res) => {
     });
 });
 
+app.get("/mma/schedule/:year", (req, res) => {
+  let year = req.params.year;
+
+  let options = {
+    method: "get",
+    url: `https://api.sportsdata.io/v3/mma/scores/json/Schedule/ufc/${year}`,
+    headers: {
+      "User-Agent": "request",
+      "Ocp-Apim-Subscription-Key": config.RESULTSTOKEN,
+    },
+  };
+  axios(options)
+    .then(({ data }) => {
+      res.json(data);
+    })
+    .catch((err) => {
+      console.log(err);
+      res.json(err);
+    });
+});
+
 app.get("/mma/event/results/:event_id", (req, res) => {
   let eventId = req.params.event_id;
   console.log("🚀 ~ file: index.js ~ line 41 ~ app.get ~ eventId", eventId);
@@ -131,6 +152,7 @@ app.get("/current/bets", (req, res) => {
 });
 
 app.post("/current/bets", (req, res) => {
+  console.log("Date", new Date("2021-12-05T02:15:00Z"));
   console.log(req.body);
   let bet = {
     fav_name: req.body.fav.name,
