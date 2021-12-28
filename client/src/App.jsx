@@ -114,27 +114,39 @@ const App = () => {
             }
           });
 
-          let winners = [];
+          let fights = [];
           for (let i = 0; i < finished.length; i++) {
             if (finished[i].Fighters) {
               if (finished[i].Fighters[0]) {
                 if (finished[i].Fighters[0].Winner === true) {
-                  winners.push(finished[i].Fighters[0]);
+                  let fight = {
+                    win: finished[i].Fighters[0],
+                    lost: finished[i].Fighters[1],
+                  };
+                  fights.push(fight);
                 }
               }
               if (finished[i].Fighters[1]) {
                 if (finished[i].Fighters[1].Winner === true) {
-                  winners.push(finished[i].Fighters[1]);
+                  let fight = {
+                    win: finished[i].Fighters[1],
+                    lost: finished[i].Fighters[0],
+                  };
+                  fights.push(fight);
                 }
               }
             }
           }
 
-          for (let i = 0; i < winners.length; i++) {
+          for (let i = 0; i < fights.length; i++) {
             for (let j = 0; j < currentBets.length; j++) {
               if (
-                winners[i].FirstName + " " + winners[i].LastName ===
-                currentBets[j].pick_name
+                fights[i].win.FirstName + " " + fights[i].win.LastName ===
+                  currentBets[j].pick_name &&
+                (fights[i].lost.FirstName + " " + fights[i].lost.LastName ===
+                  currentBets[j].fav_name ||
+                  fights[i].lost.FirstName + " " + fights[i].lost.LastName ===
+                    currentBets[j].under_name)
               ) {
                 currentBets[j].Winner = true;
               }
