@@ -107,6 +107,7 @@ const App = () => {
         });
     });
   };
+  //bug with this function!!! Fix!!
 
   const checkWinners = () => {
     eventIdsToCheck.map((id) => {
@@ -295,7 +296,13 @@ const App = () => {
               <Wallet wallet={wallet} getTotal={getTotal} />
             </div>
             <div className="col-md-4">
-              <BetList currentBets={currentBets} prevBets={previousBets} />
+              <BetList
+                currentBets={currentBets}
+                prevBets={prevBets}
+                setPrevBets={setPrevBets}
+                getCurrentBets={getCurrentBets}
+                dbPrevBets={dbPrevBets}
+              />
             </div>
           </div>
           <hr></hr>
@@ -335,7 +342,13 @@ const App = () => {
               <Wallet wallet={wallet} getTotal={getTotal} />
             </div>
             <div className="col-md-4">
-              <BetList currentBets={currentBets} prevBets={prevBets} />
+              <BetList
+                currentBets={currentBets}
+                prevBets={prevBets}
+                setPrevBets={setPrevBets}
+                getCurrentBets={getCurrentBets}
+                dbPrevBets={dbPrevBets}
+              />
             </div>
           </div>
           <hr></hr>
