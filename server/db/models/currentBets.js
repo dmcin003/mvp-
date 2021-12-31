@@ -21,4 +21,8 @@ module.exports = {
       values(1,'${fav_name}',${fav_odds},'${under_name}',${under_odds},'${pick_name}',${pick_odds},${amount},${payout},'${date_aired}')`
     );
   },
+
+  removeBet: (id) => {
+    return db.pool.query(`delete from currentbets where id = ${id}`);
+  },
 };

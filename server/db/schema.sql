@@ -37,6 +37,7 @@ CREATE TABLE IF NOT EXISTS previousbets(
   pick_odds INTEGER DEFAULT NULL,
   amount DECIMAL DEFAULT NULL,
   payout DECIMAL DEFAULT NULL,
+  winner BOOLEAN DEFAULT NULL,
   date_aired varchar(255),
 
   PRIMARY KEY (id),

@@ -5,6 +5,7 @@ const axios = require("axios");
 const config = require("../config/config.js");
 const wallet = require("./db/models/wallet.js");
 const current = require("./db/models/currentBets.js");
+const previous = require("./db/models/previousBets.js");
 const db = require("./db/pool.js");
 const app = express();
 const port = 3000;
@@ -16,7 +17,7 @@ app.use(morgan("dev"));
 //serving static files
 app.use(express.static(path.join(__dirname, "../public")));
 
-// api routes
+// odds and sports data api routes
 
 app.get("/mma/fight/odds/", (req, res) => {
   let params = { apiKey: config.TOKEN, regions: "us", oddsFormat: "american" };
@@ -174,6 +175,48 @@ app.post("/current/bets", (req, res) => {
     .catch((err) => {
       console.log(err);
       res.status(500).send(err);
+    });
+});
+
+app.delete("/current/bets", (req, res) => {
+  const id = req.body.id;
+  console.log("🚀 ~ file: index.js ~ line 183 ~ app.delete ~ id", id);
+  current
+    .removeBet(id)
+    .then((data) => {
+      res.json(data);
+    })
+    .catch((err) => {
+      res.status(500).send(err);
+      console.log(err);
+    });
+});
+
+//previous bets routes
+
+app.get("/previous/bets", (req, res) => {
+  previous
+    .getBets()
+    .then(({ rows }) => {
+      res.json(rows);
+    })
+    .catch((err) => {
+      res.status(500).send(err);
+    });
+});
+
+app.post("/previous/bets", (req, res) => {
+  let prevBet = req.body;
+
+  console.log("🚀 ~ file: index.js ~ line 196 ~ app.post ~ prevBet", prevBet);
+  previous
+    .addBet(prevBet)
+    .then((data) => {
+      res.json(data);
+    })
+    .catch((err) => {
+      res.status(500).send(err);
+      console.log(err);
     });
 });
 
