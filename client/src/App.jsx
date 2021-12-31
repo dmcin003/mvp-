@@ -17,6 +17,8 @@ const App = () => {
   const [betslip, setBetSlip] = useState([]);
   const [wallet, setWallet] = useState({ total: 0 });
   const [previousBets, setPreviousBets] = useState([]);
+  const [prevBets, setPrevBets] = useState([]);
+  const [dbPrevBets, setdbPrevBets] = useState([]);
   const [currentBets, setcurrentBets] = useState([]);
   const [results, setResults] = useState([]);
   const [view, setView] = useState("Home");
@@ -28,6 +30,7 @@ const App = () => {
   useEffect(() => {
     getTotal();
     getCurrentBets();
+    getdbPrevBets();
     getOddsList();
     getResults();
     getFightersInfo();
@@ -43,9 +46,14 @@ const App = () => {
   }, [yearsToCheck]);
 
   useEffect(() => {
-    console.log("check them events bruh");
-    checkWinners();
+    //checkWinners();
   }, [eventIdsToCheck]);
+
+  useEffect(() => {
+    let bets = _.uniq(previousBets);
+
+    setPrevBets(bets);
+  }, [previousBets]);
 
   const getFightersInfo = () => {
     axios
@@ -59,17 +67,15 @@ const App = () => {
       });
   };
 
-  const removeFromCurrentBets = () => {
-    let newCurrentBets = [];
-    let copyCurrent = [...currentBets];
-    for (let i = 0; i < currentBets.length; i++) {
-      for (let j = 0; j < prevBets.length; j++) {
-        if (currentBets[i].pick_name === prevBets[j].pick_name) {
-          copyCurrent.splice(i, 1);
-        }
-      }
-    }
-    setcurrentBets(copyCurrent);
+  const getdbPrevBets = () => {
+    axios
+      .get("/previous/bets")
+      .then(({ data }) => {
+        setdbPrevBets(data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   const getYearsFromCurrentBets = () => {
@@ -102,7 +108,6 @@ const App = () => {
     });
   };
 
-  //reference to check winners from a specific event
   const checkWinners = () => {
     eventIdsToCheck.map((id) => {
       axios
@@ -148,8 +153,32 @@ const App = () => {
                   fights[i].lost.FirstName + " " + fights[i].lost.LastName ===
                     currentBets[j].under_name)
               ) {
-                currentBets[j].Winner = true;
+                currentBets[j].winner = true;
               }
+              if (
+                fights[i].lost.FirstName + " " + fights[i].lost.LastName ===
+                  currentBets[j].pick_name &&
+                (fights[i].win.FirstName + " " + fights[i].win.LastName ===
+                  currentBets[j].fav_name ||
+                  fights[i].win.FirstName + " " + fights[i].win.LastName ===
+                    currentBets[j].under_name)
+              ) {
+                currentBets[j].winner = false;
+              }
+            }
+          }
+
+          let prevBets = currentBets.map((bet) => {
+            if (bet.winner === true || bet.winner === false) {
+              return bet;
+            }
+          });
+
+          prevBets = _.uniq(prevBets);
+
+          for (let i = 0; i < prevBets.length; i++) {
+            if (prevBets[i] !== undefined) {
+              setPreviousBets((previousBets) => [prevBets[i], ...previousBets]);
             }
           }
         })
@@ -306,7 +335,7 @@ const App = () => {
               <Wallet wallet={wallet} getTotal={getTotal} />
             </div>
             <div className="col-md-4">
-              <BetList currentBets={currentBets} prevBets={previousBets} />
+              <BetList currentBets={currentBets} prevBets={prevBets} />
             </div>
           </div>
           <hr></hr>
@@ -357,7 +386,13 @@ const App = () => {
             <Wallet wallet={wallet} getTotal={getTotal} />
           </div>
           <div className="col-md-4">
-            <BetList currentBets={currentBets} prevBets={previousBets} />
+            <BetList
+              currentBets={currentBets}
+              prevBets={prevBets}
+              setPrevBets={setPrevBets}
+              getCurrentBets={getCurrentBets}
+              dbPrevBets={dbPrevBets}
+            />
           </div>
         </div>
         <hr></hr>
