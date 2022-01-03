@@ -46,7 +46,7 @@ const App = () => {
   }, [yearsToCheck]);
 
   useEffect(() => {
-    //checkWinners();
+    checkWinners();
   }, [eventIdsToCheck]);
 
   useEffect(() => {
@@ -93,12 +93,14 @@ const App = () => {
       axios
         .get(`/mma/schedule/${year}`)
         .then(({ data }) => {
-          console.log("🚀 ~ file: App.jsx ~ line 82 ~ .then ~ data", data);
           let ids = data.map((event) => {
             return event.EventId;
           });
+
           if (ids.length) {
             eIds = eventIds.concat(ids);
+          } else {
+            eIds = ids;
           }
           setEventIdsToCheck(eIds);
         })
@@ -107,7 +109,6 @@ const App = () => {
         });
     });
   };
-  //bug with this function!!! Fix!!
 
   const checkWinners = () => {
     eventIdsToCheck.map((id) => {
@@ -271,6 +272,18 @@ const App = () => {
       });
   };
 
+  const depositMoney = (amount) => {
+    axios
+      .put("/wallet/total", { total: amount })
+      .then((data) => {
+        console.log(data);
+        getTotal();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   if (view === "Event Results") {
     return (
       <div className="container">
@@ -293,7 +306,11 @@ const App = () => {
               />
             </div>
             <div className="col-md-4">
-              <Wallet wallet={wallet} getTotal={getTotal} />
+              <Wallet
+                wallet={wallet}
+                getTotal={getTotal}
+                depositMoney={depositMoney}
+              />
             </div>
             <div className="col-md-4">
               <BetList
@@ -302,6 +319,7 @@ const App = () => {
                 setPrevBets={setPrevBets}
                 getCurrentBets={getCurrentBets}
                 dbPrevBets={dbPrevBets}
+                depositMoney={depositMoney}
               />
             </div>
           </div>
@@ -339,7 +357,11 @@ const App = () => {
               />
             </div>
             <div className="col-md-4">
-              <Wallet wallet={wallet} getTotal={getTotal} />
+              <Wallet
+                wallet={wallet}
+                getTotal={getTotal}
+                depositMoney={depositMoney}
+              />
             </div>
             <div className="col-md-4">
               <BetList
@@ -348,6 +370,7 @@ const App = () => {
                 setPrevBets={setPrevBets}
                 getCurrentBets={getCurrentBets}
                 dbPrevBets={dbPrevBets}
+                depositMoney={depositMoney}
               />
             </div>
           </div>
@@ -396,7 +419,11 @@ const App = () => {
             />
           </div>
           <div className="col-md-4">
-            <Wallet wallet={wallet} getTotal={getTotal} />
+            <Wallet
+              wallet={wallet}
+              getTotal={getTotal}
+              depositMoney={depositMoney}
+            />
           </div>
           <div className="col-md-4">
             <BetList
@@ -405,6 +432,7 @@ const App = () => {
               setPrevBets={setPrevBets}
               getCurrentBets={getCurrentBets}
               dbPrevBets={dbPrevBets}
+              depositMoney={depositMoney}
             />
           </div>
         </div>

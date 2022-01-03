@@ -6,19 +6,11 @@ import { useForm } from "react-hook-form";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowDown } from "@fortawesome/free-solid-svg-icons";
 
-const Wallet = ({ getTotal, wallet }) => {
+const Wallet = ({ getTotal, wallet, depositMoney }) => {
   const { register, handleSubmit, errors } = useForm();
 
   const onSubmit = ({ amount }) => {
-    axios
-      .put("/wallet/total", { total: amount })
-      .then((data) => {
-        console.log(data);
-        getTotal();
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    depositMoney(amount);
   };
 
   return (
