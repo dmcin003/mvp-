@@ -7,10 +7,13 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowDown } from "@fortawesome/free-solid-svg-icons";
 
 const Wallet = ({ getTotal, wallet, depositMoney }) => {
-  const { register, handleSubmit, errors } = useForm();
+  const { register, handleSubmit, reset, errors } = useForm({
+    defaultValues: { amount: "" },
+  });
 
   const onSubmit = ({ amount }) => {
     depositMoney(amount);
+    reset();
   };
 
   return (
