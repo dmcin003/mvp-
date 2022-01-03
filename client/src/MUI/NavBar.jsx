@@ -15,7 +15,7 @@ import MenuItem from "@mui/material/MenuItem";
 const pages = ["Home", "Event Results"];
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
 
-const ResponsiveAppBar = ({ setView }) => {
+const ResponsiveAppBar = ({ setView, handleOpen }) => {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
 
@@ -117,8 +117,28 @@ const ResponsiveAppBar = ({ setView }) => {
 
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
+              <IconButton
+                onClick={() => {
+                  handleOpen("Signup");
+                }}
+                sx={{ p: 0 }}
+              >
+                Signup
+              </IconButton>
+            </Tooltip>
+            {/* <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                 <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+              </IconButton>
+            </Tooltip> */}
+            <Tooltip title="Open settings">
+              <IconButton
+                onClick={() => {
+                  handleOpen("Login");
+                }}
+                sx={{ p: 0 }}
+              >
+                Login
               </IconButton>
             </Tooltip>
             <Menu

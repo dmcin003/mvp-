@@ -11,6 +11,7 @@ import BetList from "./BetList.jsx";
 import EventResults from "./EventResults.jsx";
 import FighterStats from "./FighterStats.jsx";
 import ResponsiveAppBar from "./MUI/NavBar.jsx";
+import Modal from "./MUI/Modal.jsx";
 
 const App = () => {
   const [fights, setFights] = useState({ favs: [], unders: [], dates: [] });
@@ -26,6 +27,11 @@ const App = () => {
   const [clickedFighter, setClickedFighter] = useState("");
   const [yearsToCheck, setYearsToCheck] = useState([]);
   const [eventIdsToCheck, setEventIdsToCheck] = useState([]);
+
+  //Modal state and functions
+  const [open, setOpen] = React.useState({ toggle: false, title: "" });
+  const handleOpen = (title) => setOpen({ toggle: true, title: title });
+  const handleClose = () => setOpen({ toggle: false });
 
   useEffect(() => {
     getTotal();
@@ -385,7 +391,7 @@ const App = () => {
 
   return (
     <div className="container">
-      <ResponsiveAppBar setView={setView} />
+      <ResponsiveAppBar setView={setView} handleOpen={handleOpen} />
 
       <div className="jumbotron bg-dark text-white">
         <div className="list-container">
@@ -441,6 +447,7 @@ const App = () => {
           <p>MVP demo | rfe6 in the house!</p>
         </footer>
       </div>
+      <Modal handleOpen={handleOpen} handleClose={handleClose} open={open} />
     </div>
   );
 };
